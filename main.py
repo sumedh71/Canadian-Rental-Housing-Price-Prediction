@@ -133,7 +133,7 @@ def scrape_zumper_data():
                 row_data.append(text)
         rows.append(row_data)
     
-    # Create DataFrame
+
     columns = [
         'Ranking', 'Ranking_Change', 'City', 
         '1BR_Price', '1BR_Monthly_Change', '1BR_Yearly_Change',
@@ -142,7 +142,7 @@ def scrape_zumper_data():
     
     df = pd.DataFrame(rows, columns=columns)
     
-    # Clean up the data
+
     df['1BR_Price'] = df['1BR_Price'].str.replace('$', '').str.replace(',', '').astype(int)
     df['2BR_Price'] = df['2BR_Price'].str.replace('$', '').str.replace(',', '').astype(int)
     df['1BR_Monthly_Change'] = df['1BR_Monthly_Change'].str.replace('%', '').astype(float)
@@ -281,8 +281,7 @@ with tab2:
             lowest_city = df.iloc[-1]['City']
             lowest_price = df.iloc[-1]['1BR_Price']
             st.metric("Most Affordable (1BR)", f"{lowest_city}", f"${lowest_price:,}")
-        
-        # Display searchable/sortable table
+    
         st.dataframe(
             df.style.format({
                 '1BR_Price': '${:,}',
@@ -297,13 +296,11 @@ with tab2:
         
         st.subheader("🔍 Market Insights")
         
-        # Cities with highest growth
         top_growth = df.nlargest(3, '1BR_Yearly_Change')
         st.write("**Cities with Highest 1BR Rent Growth (Year-over-Year):**")
         for idx, row in top_growth.iterrows():
             st.write(f"• {row['City']}: +{row['1BR_Yearly_Change']:.1f}%")
         
-        # Cities with biggest declines
         top_decline = df.nsmallest(3, '1BR_Yearly_Change')
         st.write("**Cities with Biggest 1BR Rent Declines (Year-over-Year):**")
         for idx, row in top_decline.iterrows():
